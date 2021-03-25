@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 4 1.2</title>
+</head>
+
+<body>
+    <script>
+        'use strict'
+
+        /* Задача 1.2
+        Сделайте в стиле es5, а затем в стиле es6 (по аналогии из дополнительных видео -> 3 примеры наследования -> механика наследования),
+        а) конструктор Post, который принимает параметры author, text, date и сохраняет их как свойства объекта. Объекты типа Post должны иметь метод edit, который будет принимать текст и записывать его в свойство text объекта.
+        б) конструктор AttachedPost, который принимает параметры author, text, date. Проинициализируйте эти свойства с помощью конструктора Post, чтобы не дублировать код. Также в конструкторе AttachedPost должно создаваться свойство highlighted со значением false. Унаследуйте в объектах типа AttachedPost методы из Post.
+        Объекты типа AttachedPost должны иметь метод makeTextHighlighted, который будет назначать свойству highlighted значение true. */
+
+        // ES 5
+
+        function post(author, text, date) {
+            this.author = author;
+            this.text = text;
+            this.date = date;
+        }
+
+        post.prototype.edit = function (text) {
+            this.text = text;
+        };
+
+        let post1 = new post('Ivan', 'ololo', '22.11.1999');
+        post1.edit('pish-pish');
+        console.log(post1);
+
+        // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/call
+
+        function AttachedPost(author, text, date) {
+            post.call(this, author, text, date);
+            this.highlighted = false;
+        }
+
+        AttachedPost.prototype = Object.create(post.prototype); //Видео 2 механика наследования
+        AttachedPost.constructor = AttachedPost;
+
+        AttachedPost.prototype.makeTextHighlighted = function () {
+            this.highlighted = true;
+        };
+
+        let per = new AttachedPost('Petr', 'Галактика в опасности', '23.11.1999');
+        console.log(per);
+        per.makeTextHighlighted();
+        per.edit('Галактика вне опасности');
+        console.log(per);
+
+
+
+        // ES 6
+
+        class post {
+            constructor(author, text, date) {
+                this.author = author;
+                this.text = text;
+                this.date = date;
+            }
+
+            edit(text) {
+                this.text = text;
+            }
+        }
+
+        let post1 = new post('Ivan', 'ololo', '22.11.1999');
+        post1.edit('pish-pish');
+        console.log(post1);
+
+        // класс attachedpost через extends наследует post
+        class AttachedPost extends post {
+            constructor(author, text, date) {
+                super(author, text, date); // хз как работает, но если мы создаём собственный конструктор, мы должны вызвать super, в противном случае объект для this не будет создан, и мы получим ошибку.
+                this.highlighted = false;
+            }
+
+            makeTextHighlighted() {
+                this.highlighted = true;
+            }
+        }
+
+        let per = new AttachedPost('Petr', 'Галактика в опасности', '23.11.1999');
+        console.log(per);
+        per.makeTextHighlighted();
+        per.edit('Галактика вне опасности');
+        console.log(per);
+
+
+    </script>
+
+</body>
+
+</html>
