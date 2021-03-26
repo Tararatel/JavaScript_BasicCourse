@@ -20,29 +20,29 @@
 
         // ES 5
 
-        function post(author, text, date) {
+        function Post(author, text, date) {
             this.author = author;
             this.text = text;
             this.date = date;
         }
 
-        post.prototype.edit = function (text) {
+        Post.prototype.edit = function (text) {
             this.text = text;
         };
 
-        let post1 = new post('Ivan', 'ololo', '22.11.1999');
+        let post1 = new Post('Ivan', 'ololo', '22.11.1999');
         post1.edit('pish-pish');
         console.log(post1);
 
         // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Function/call
 
         function AttachedPost(author, text, date) {
-            post.call(this, author, text, date);
+            Post.call(this, author, text, date);
             this.highlighted = false;
         }
 
         AttachedPost.prototype = Object.create(post.prototype); //Видео 2 механика наследования
-        AttachedPost.constructor = AttachedPost;
+        AttachedPost.prototype.constructor = AttachedPost;
 
         AttachedPost.prototype.makeTextHighlighted = function () {
             this.highlighted = true;
@@ -58,7 +58,7 @@
 
         // ES 6
 
-        class post {
+        class Post {
             constructor(author, text, date) {
                 this.author = author;
                 this.text = text;
@@ -70,7 +70,7 @@
             }
         }
 
-        let post1 = new post('Ivan', 'ololo', '22.11.1999');
+        let post1 = new Post('Ivan', 'ololo', '22.11.1999');
         post1.edit('pish-pish');
         console.log(post1);
 
